@@ -1,0 +1,20 @@
+diff --git a/src/speechbox/diarize.py b/src/speechbox/diarize.py
+index 7bbf03e..ec04fb0 100644
+--- a/src/speechbox/diarize.py
++++ b/src/speechbox/diarize.py
+@@ -30,6 +30,7 @@ class ASRDiarizationPipeline:
+         use_auth_token: Optional[Union[str, bool]] = True,
+         **kwargs,
+     ):
++        #print(**kwargs)
+         asr_pipeline = pipeline(
+             "automatic-speech-recognition",
+             model=asr_model,
+@@ -38,6 +39,7 @@ class ASRDiarizationPipeline:
+             **kwargs,
+         )
+         diarization_pipeline = Pipeline.from_pretrained(diarizer_model, use_auth_token=use_auth_token)
++        diarization_pipeline.to(torch.device("cuda"))
+         return cls(asr_pipeline, diarization_pipeline)
+ 
+     def __call__(
